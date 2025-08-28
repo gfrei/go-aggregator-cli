@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+	config.SetUser("gfrei")
+
 	cfg, err := config.Read()
 
 	if err != nil {
