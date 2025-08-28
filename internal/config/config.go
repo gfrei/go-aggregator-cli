@@ -26,6 +26,43 @@ func getConfigPath() (string, error) {
 	return fullPath, nil
 }
 
+func SetUser(user string) error {
+	cfg, err := Read()
+
+	if err != nil {
+		return err
+	}
+
+	cfg.CurrentUserName = user
+
+	err = writeConfig(cfg)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func writeConfig(cfg Config) error {
+	data, err := json.Marshal(cfg)
+	if err != nil {
+		return err
+	}
+
+	path, err := getConfigPath()
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(path, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func Read() (Config, error) {
 	empty := Config{}
 
@@ -34,13 +71,13 @@ func Read() (Config, error) {
 		return empty, fmt.Errorf("error getting path: %v", err)
 	}
 
-	contentBytes, err := os.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return empty, fmt.Errorf("error reading file: %v", err)
 	}
 
 	var parsed Config
-	err = json.Unmarshal(contentBytes, &parsed)
+	err = json.Unmarshal(data, &parsed)
 	if err != nil {
 		return empty, fmt.Errorf("could not parse json")
 	}
