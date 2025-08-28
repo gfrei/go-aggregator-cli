@@ -14,15 +14,16 @@ type Config struct {
 func Read() (Config, error) {
 	empty := Config{}
 
-	path, err := os.UserHomeDir()
+	homePath, err := os.UserHomeDir()
 	if err != nil {
 		return empty, fmt.Errorf("UserHomeDir not found")
 	}
 
-	contentBytes, err := os.ReadFile(path)
+	fullPath := homePath + "/.gatorconfig.json"
+
+	contentBytes, err := os.ReadFile(fullPath)
 	if err != nil {
 		return empty, fmt.Errorf("error reading file: %v", err)
-
 	}
 
 	var parsed Config
