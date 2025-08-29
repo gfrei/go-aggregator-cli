@@ -15,18 +15,7 @@ type Config struct {
 	CurrentUserName string `json:"current_user_name"`
 }
 
-func getConfigPath() (string, error) {
-	homePath, err := os.UserHomeDir()
-	if err != nil {
-		return "", fmt.Errorf("UserHomeDir not found")
-	}
-
-	fullPath := homePath + configFile
-
-	return fullPath, nil
-}
-
-func SetUser(user string) error {
+func (c *Config) SetUser(user string) error {
 	cfg, err := Read()
 
 	if err != nil {
@@ -42,6 +31,17 @@ func SetUser(user string) error {
 	}
 
 	return nil
+}
+
+func getConfigPath() (string, error) {
+	homePath, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("UserHomeDir not found")
+	}
+
+	fullPath := homePath + configFile
+
+	return fullPath, nil
 }
 
 func writeConfig(cfg Config) error {
