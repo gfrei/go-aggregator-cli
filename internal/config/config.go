@@ -15,6 +15,10 @@ type Config struct {
 	CurrentUserName string `json:"current_user_name"`
 }
 
+func New() Config {
+	return Config{}
+}
+
 func (c *Config) SetUser(user string) error {
 	cfg, err := Read()
 
