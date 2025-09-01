@@ -33,7 +33,7 @@ func main() {
 
 	_commands.register("login", handlerLogin)
 
-	err = processCommand(_state, _commands)
+	err = processCommand(&_state, &_commands, os.Args[1:])
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

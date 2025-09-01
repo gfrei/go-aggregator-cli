@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 type command struct {
@@ -44,23 +43,15 @@ func initCommands() commands {
 	}
 }
 
-func processCommand(_state state, _commands commands) error {
-	if len(os.Args) < 2 {
-		return fmt.Errorf("no commands")
+func processCommand(s *state, cmds *commands, args []string) error {
+	if len(args) < 1 {
+		return fmt.Errorf("no command provided")
 	}
-
-	cmdName := os.Args[1]
-	args := os.Args[2:]
 
 	cmd := command{
-		name: cmdName,
-		args: args,
+		name: args[0],
+		args: args[1:],
 	}
 
-	err := _commands.run(&_state, cmd)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return cmds.run(s, cmd)
 }
