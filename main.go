@@ -15,6 +15,10 @@ type command struct {
 	args []string
 }
 
+type commands struct {
+	commandMap map[string]func(*state, command) error
+}
+
 func handlerLogin(s *state, cmd command) error {
 	if len(cmd.args) == 0 {
 		return fmt.Errorf("login error: no username")
