@@ -17,20 +17,15 @@ func (c *commands) run(s *state, cmd command) error {
 	commandFunc, ok := c.commandMap[cmd.name]
 
 	if !ok {
-		return fmt.Errorf("command not found %v", cmd.name)
+		return fmt.Errorf("unknown command %q", cmd.name)
 	}
 
-	err := commandFunc(s, cmd)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return commandFunc(s, cmd)
 }
 
 func (c *commands) register(name string, f func(*state, command) error) error {
 	if _, ok := c.commandMap[name]; ok {
-		return fmt.Errorf("command already registered")
+		return fmt.Errorf("command %q already registered", name)
 	}
 	c.commandMap[name] = f
 
@@ -39,7 +34,7 @@ func (c *commands) register(name string, f func(*state, command) error) error {
 
 func initCommands() commands {
 	return commands{
-		commandMap: make(map[string]func(*state, command) error, 0),
+		commandMap: make(map[string]func(*state, command) error),
 	}
 }
 
