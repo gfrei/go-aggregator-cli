@@ -22,13 +22,18 @@ func handlerLogin(s *state, cmd command) error {
 	return setUser(s, user)
 }
 
-func setUser(s *state, user string) error {
-	err := s.config.SetUser(user)
+func setUser(s *state, username string) error {
+	_, err := s.db.GetUser(context.Background(), username)
+	if err != nil {
+		return fmt.Errorf("user %q not registered", username)
+	}
+
+	err = s.config.SetUser(username)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Login as:", user)
+	fmt.Printf("logged in as: %q\n", username)
 
 	return nil
 }
