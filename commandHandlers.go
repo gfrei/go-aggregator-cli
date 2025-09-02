@@ -22,7 +22,7 @@ func handlerLogin(s *state, cmd command) error {
 }
 
 func setUser(s *state, username string) error {
-	_, err := s.db.GetUser(context.Background(), username)
+	_, err := s.db.GetUserByName(context.Background(), username)
 	if err != nil {
 		return fmt.Errorf("user %q not registered", username)
 	}
@@ -65,7 +65,7 @@ func handlerNewFeed(s *state, cmd command) error {
 		return fmt.Errorf("addfeed error: add name and url")
 	}
 
-	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
+	user, err := s.db.GetUserByName(context.Background(), s.config.CurrentUserName)
 	if err != nil {
 		return err
 	}
