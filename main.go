@@ -61,6 +61,22 @@ func handlerRegister(s *state, cmd command) error {
 	return setUser(s, user.Name)
 }
 
+func handlerReset(s *state, cmd command) error {
+	count, err := s.db.CountUsers(context.Background())
+	if err != nil {
+		return err
+	}
+
+	err = s.db.DeleteUsers(context.Background())
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("deleted %v users\n", count)
+
+	return nil
+}
+
 func main() {
 	_state, err := initState()
 	if err != nil {
@@ -72,6 +88,7 @@ func main() {
 
 	_commands.register("login", handlerLogin)
 	_commands.register("register", handlerRegister)
+	_commands.register("reset", handlerReset)
 
 	err = processCommand(&_state, &_commands, os.Args[1:])
 	if err != nil {
