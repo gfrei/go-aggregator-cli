@@ -87,6 +87,28 @@ func handlerNewFeed(s *state, cmd command) error {
 	return nil
 }
 
+func handlerGetAllFeeds(s *state, cmd command) error {
+	feeds, err := s.db.GetAllFeeds(context.Background())
+	if err != nil {
+		return err
+	}
+
+	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	for _, feed := range feeds {
+		if feed.UserID != user.ID {
+			fmt.Printf("* %v: %v\n", feed.Name, feed.Url)
+		} else {
+			fmt.Printf("* %v: %v (owner)\n", feed.Name, feed.Url)
+		}
+	}
+
+	return nil
+}
+
 func handlerReset(s *state, cmd command) error {
 	count, err := s.db.CountUsers(context.Background())
 	if err != nil {
