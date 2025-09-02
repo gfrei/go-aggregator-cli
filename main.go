@@ -77,6 +77,19 @@ func handlerReset(s *state, cmd command) error {
 	return nil
 }
 
+func handlerUsers(s *state, cmd command) error {
+	users, err := s.db.GetAllUsers(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for _, user := range users {
+		println(user.Name)
+	}
+
+	return nil
+}
+
 func main() {
 	_state, err := initState()
 	if err != nil {
@@ -89,6 +102,7 @@ func main() {
 	_commands.register("login", handlerLogin)
 	_commands.register("register", handlerRegister)
 	_commands.register("reset", handlerReset)
+	_commands.register("users", handlerUsers)
 
 	err = processCommand(&_state, &_commands, os.Args[1:])
 	if err != nil {
