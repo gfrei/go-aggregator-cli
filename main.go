@@ -56,7 +56,7 @@ func handlerRegister(s *state, cmd command) error {
 		return err
 	}
 
-	fmt.Printf("register user %q\n", user.Name)
+	fmt.Printf("registered user %q\n", user.Name)
 
 	return setUser(s, user.Name)
 }
