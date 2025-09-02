@@ -94,6 +94,22 @@ func handlerUsers(s *state, cmd command) error {
 	return nil
 }
 
+func handlerAgg(s *state, cmd command) error {
+	// if len(cmd.args) == 0 {
+	// 	return fmt.Errorf("agg error: add an url")
+	// }
+
+	// feed, err := fetchFeed(context.Background(), cmd.args[0])
+	feed, err := fetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(feed)
+
+	return nil
+}
+
 func main() {
 	_state, err := initState()
 	if err != nil {
@@ -107,6 +123,7 @@ func main() {
 	_commands.register("register", handlerRegister)
 	_commands.register("reset", handlerReset)
 	_commands.register("users", handlerUsers)
+	_commands.register("agg", handlerAgg)
 
 	err = processCommand(&_state, &_commands, os.Args[1:])
 	if err != nil {
