@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 func handlerLogin(s *state, cmd command) error {
