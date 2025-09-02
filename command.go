@@ -33,9 +33,17 @@ func (c *commands) register(name string, f func(*state, command) error) error {
 }
 
 func initCommands() commands {
-	return commands{
+	cmds := commands{
 		commandMap: make(map[string]func(*state, command) error),
 	}
+
+	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
+	cmds.register("users", handlerUsers)
+	cmds.register("agg", handlerAgg)
+
+	return cmds
 }
 
 func processCommand(s *state, cmds *commands, args []string) error {
