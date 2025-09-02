@@ -60,6 +60,33 @@ func handlerRegister(s *state, cmd command) error {
 	return setUser(s, user.Name)
 }
 
+func handlerNewFeed(s *state, cmd command) error {
+	if len(cmd.args) < 2 {
+		return fmt.Errorf("addfeed error: add name and url")
+	}
+
+	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	feed, err := s.db.CreateFeed(context.Background(), database.CreateFeedParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Name:      cmd.args[0],
+		Url:       cmd.args[1],
+		UserID:    user.ID,
+	})
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("registered feed %q\n", feed.Name)
+
+	return nil
+}
+
 func handlerReset(s *state, cmd command) error {
 	count, err := s.db.CountUsers(context.Background())
 	if err != nil {
