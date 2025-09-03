@@ -60,7 +60,7 @@ func handlerRegister(s *state, cmd command) error {
 	return setUser(s, user.Name)
 }
 
-func handlerNewFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command) error {
 	if len(cmd.args) < 2 {
 		return fmt.Errorf("addfeed error: add name and url")
 	}
