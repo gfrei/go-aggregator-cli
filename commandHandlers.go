@@ -84,7 +84,7 @@ func handlerNewFeed(s *state, cmd command) error {
 
 	fmt.Printf("registered feed %q\n", feed.Name)
 
-	return nil
+	return followFeed(s, feed.ID, user.ID)
 }
 
 func handlerGetAllFeeds(s *state, cmd command) error {
@@ -136,12 +136,16 @@ func handlerFeedFollow(s *state, cmd command) error {
 		return err
 	}
 
+	return followFeed(s, feed.ID, user.ID)
+}
+
+func followFeed(s *state, feedId, userId uuid.UUID) error {
 	feedFollow, err := s.db.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		UserID:    user.ID,
-		FeedID:    feed.ID,
+		UserID:    userId,
+		FeedID:    feedId,
 	})
 	if err != nil {
 		return err
