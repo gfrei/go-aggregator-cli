@@ -60,14 +60,9 @@ func handlerRegister(s *state, cmd command) error {
 	return setUser(s, user.Name)
 }
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.args) < 2 {
 		return fmt.Errorf("addfeed error: add name and url")
-	}
-
-	user, err := s.db.GetUserByName(context.Background(), s.config.CurrentUserName)
-	if err != nil {
-		return err
 	}
 
 	feed, err := s.db.CreateFeed(context.Background(), database.CreateFeedParams{
@@ -121,17 +116,12 @@ func handlerReset(s *state, cmd command) error {
 	return nil
 }
 
-func handlerFeedFollow(s *state, cmd command) error {
+func handlerFeedFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) < 1 {
 		return fmt.Errorf("feedfollow error: select a feed url")
 	}
 
 	feed, err := s.db.GetFeedByUrl(context.Background(), cmd.args[0])
-	if err != nil {
-		return err
-	}
-
-	user, err := s.db.GetUserByName(context.Background(), s.config.CurrentUserName)
 	if err != nil {
 		return err
 	}

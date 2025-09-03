@@ -42,9 +42,9 @@ func initCommands() commands {
 	cmds.register("reset", handlerReset)
 	cmds.register("users", handlerUsers)
 	cmds.register("agg", handlerAgg)
-	cmds.register("addfeed", handlerAddFeed)
+	cmds.register("addfeed", middlewareLoggedIn(handlerAddFeed))
 	cmds.register("feeds", handlerGetAllFeeds)
-	cmds.register("follow", handlerFeedFollow)
+	cmds.register("follow", middlewareLoggedIn(handlerFeedFollow))
 	cmds.register("following", handlerFollowing)
 
 	return cmds
