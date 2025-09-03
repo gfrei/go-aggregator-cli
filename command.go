@@ -45,6 +45,7 @@ func initCommands() commands {
 	cmds.register("addfeed", handlerNewFeed)
 	cmds.register("feeds", handlerGetAllFeeds)
 	cmds.register("follow", handlerFeedFollow)
+	cmds.register("following", handlerFollowing)
 
 	return cmds
 }

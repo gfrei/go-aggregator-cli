@@ -152,6 +152,21 @@ func handlerFeedFollow(s *state, cmd command) error {
 	return nil
 }
 
+func handlerFollowing(s *state, cmd command) error {
+	follows, err := s.db.GetFeedFollowsForUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("user %q is following\n", s.config.CurrentUserName)
+
+	for _, follow := range follows {
+		fmt.Println(follow.FeedName)
+	}
+
+	return nil
+}
+
 func handlerUsers(s *state, cmd command) error {
 	users, err := s.db.GetAllUsers(context.Background())
 	if err != nil {
