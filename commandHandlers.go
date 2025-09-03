@@ -165,7 +165,7 @@ func handlerFollowing(s *state, cmd command) error {
 	fmt.Printf("user %q is following\n", s.config.CurrentUserName)
 
 	for _, follow := range follows {
-		fmt.Println("*", follow.FeedName)
+		fmt.Printf("\t- %q\n", follow.FeedName)
 	}
 
 	return nil
