@@ -121,6 +121,37 @@ func handlerReset(s *state, cmd command) error {
 	return nil
 }
 
+func handlerFeedFollow(s *state, cmd command) error {
+	if len(cmd.args) < 1 {
+		return fmt.Errorf("feedfollow error: select a feed url")
+	}
+
+	feed, err := s.db.GetFeedByUrl(context.Background(), cmd.args[0])
+	if err != nil {
+		return err
+	}
+
+	user, err := s.db.GetUserByName(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return err
+	}
+
+	feedFollow, err := s.db.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		UserID:    user.ID,
+		FeedID:    feed.ID,
+	})
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("user %q now follows %q\n", feedFollow.UserName, feedFollow.FeedName)
+
+	return nil
+}
+
 func handlerUsers(s *state, cmd command) error {
 	users, err := s.db.GetAllUsers(context.Background())
 	if err != nil {
