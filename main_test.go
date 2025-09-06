@@ -27,3 +27,5 @@ func TestHandlerLogin(t *testing.T) {
 		t.Log("Ok!")
 	}
 }
+
+//TODO: test inputs
